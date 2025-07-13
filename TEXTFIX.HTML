@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chad Nobark Ticker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #181818;
+      margin: 0;
+      font-family: 'Share Tech Mono', monospace;
+      color: #39FF14;
+      display: flex;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+    }
+    .ticker-container {
+      width: 90vw;
+      max-width: 1200px;
+      background: #111;
+      border: 2px solid #39FF14;
+      padding: 18px 0;
+      overflow: hidden;
+      box-shadow: 0 0 10px #39FF1433;
+      border-radius: 12px;
+      position: relative;
+    }
+    .ticker-track {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      animation: ticker 90s linear infinite;
+      width: max-content;
+    }
+    .ticker-text {
+      display: inline-block;
+      white-space: nowrap;
+      font-size: 2rem;
+      letter-spacing: 0.15em;
+      color: #39FF14;
+      text-shadow: 0 0 8px #39FF1444;
+      padding-right: 3rem;
+    }
+    .ticker-morse {
+      display: inline-block;
+      white-space: nowrap;
+      font-size: 1.5rem;
+      color: #39FF1499;
+      opacity: 0.45;
+      padding-right: 3rem;
+    }
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+  </style>
+</head>
+<body>
+  <div class="ticker-container">
+    <div class="ticker-track" id="ticker-track">
+      <!-- JS inserts content -->
+    </div>
+  </div>
+  <script>
+    // Morse code lookup
+    const MORSE = {
+      'a': '.-',   'b': '-...', 'c': '-.-.', 'd': '-..', 'e': '.',
+      'f': '..-.', 'g': '--.',  'h': '....', 'i': '..',  'j': '.---',
+      'k': '-.-',  'l': '.-..', 'm': '--',   'n': '-.',  'o': '---',
+      'p': '.--.', 'q': '--.-', 'r': '.-.',  's': '...', 't': '-',
+      'u': '..-',  'v': '...-', 'w': '.--',  'x': '-..-','y': '-.--',
+      'z': '--..', '0': '-----','1': '.----','2': '..---','3': '...--',
+      '4': '....-','5': '.....','6': '-....','7': '--...','8': '---..',
+      '9': '----.',' ': '/',    '?': '..--..','!': '-.-.--','.': '.-.-.-',
+      ',': '--..--', "'": '.----.', '"': '.-..-.', '/': '-..-.', '(': '-.--.',
+      ')': '-.--.-', '&': '.-...', ':': '---...', ';': '-.-.-.', '=': '-...-',
+      '+': '.-.-.', '-': '-....-', '_': '..--.-', '$': '...-..-', '@': '.--.-.',
+      '|': '|'
+    };
+    function toMorse(str) {
+      return str.toLowerCase().split('').map(c => MORSE[c] || '').join(' ');
+    }
+    // Cleaned up lines
+    let lines = [
+      "What a weak society",
+      "Careful, they’ve got spies all over",
+      "Your ride’s over, mutie... time to die",
+      "Where is your power armor?",
+      "Your thoughts?",
+      "Visit Noonan's Autos today",
+      "Nothing stops the Highwayman",
+      "Boomus?",
+      "Hail the People's Republic",
+      "What the fuck are you doing? My brother died at the Battle of Hoover Dam",
+      "Chupacabra is REAL",
+      "War changes",
+      "Subscribe to Chad Nobark",
+      "Use code NOBARK in the Epic Games Store",
+      "Sub to Knightraven too"
+    ];
+    // Shuffle lines (Fisher-Yates)
+    for (let i = lines.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      [lines[i], lines[j]] = [lines[j], lines[i]];
+    }
+    // Build ticker HTML: text + morse for each, repeat to loop
+    let tickerHTML = '';
+    for (let line of lines) {
+      tickerHTML += `<span class="ticker-text">${line} &nbsp;|&nbsp;</span>`;
+      tickerHTML += `<span class="ticker-morse">${toMorse(line)} &nbsp;|&nbsp;</span>`;
+    }
+    // Repeat for seamless loop
+    document.getElementById('ticker-track').innerHTML = tickerHTML + tickerHTML;
+  </script>
+</body>
+</html>
